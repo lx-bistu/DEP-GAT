@@ -165,13 +165,10 @@ class Dataset(data.Dataset):
         word_ner_dict = collections.defaultdict(list)
         for uid, u_nerid in zip(utters_ids, utters_ner):
             for wid, nerid in zip(uid, u_nerid):
-                ##代码更改。
                 word_ner_dict[wid.item()].append(nerid)
                 # word_ner_dict[wid.int()].append(nerid)
         ner_ids = sorted(list(set([oo for o in utters_ner for oo in o])))
         nerid2nid, nid2nerid = self.add_nerNode(G, len(ner_ids), len(words_ids) + len(utters_ids), ner_ids)
-        # 由于word_ner_dict的key都是tensor数据，所以这里并没有办法取到word_ner_dict[wid]
-        # word_ner_ids永远为空，所以ner的边，并没有添加成功。
         for wid in words_ids:
             word_ner_ids = word_ner_dict[wid]
             for nerid in word_ner_ids:
@@ -182,7 +179,6 @@ class Dataset(data.Dataset):
 
         # Speaker Nodes
         # speaker - sent
-        # 这里只能是编号为0的作者，如果speaker的编号大于0，那么就不行
         speaker_ids = [int(o[0][-1]) - 1 if o[0][-1].isdigit() else int(o[0][-2]) - 1 for o in
                        utters]  # speaker id start from 0
         num_speaker_node = max(speaker_ids) + 1
@@ -205,7 +201,6 @@ class Dataset(data.Dataset):
         for wid in arga_wordid:
             for sid in range(len(utters_ids)):
                 if wid in utters_ids[sid]: arga_sentid.append(sid)
-        # zio,
         for sid in sorted(list(set(arga_sentid))):
             G.add_edges(sid2nid[sid], argid2nid[0], data={'ws_link': self.get_weight(), "dtype": torch.tensor([0])})
             G.add_edges(argid2nid[0], sid2nid[sid], data={'ws_link': self.get_weight(), "dtype": torch.tensor([0])})
@@ -234,13 +229,12 @@ class Dataset(data.Dataset):
                             data={'ws_link': self.get_weight(), "dtype": torch.tensor([1])})
                 G.add_edges(argid2nid[1], nerid2nid[nerid],
                             data={'ws_link': self.get_weight(), "dtype": torch.tensor([1])})
-        ## 代码添加，前面还需要把parse的信息加进来f
         # word - parse type
         utters_parse = [[constant.dep_s2i[oo] for oo in o] for o in utters_parse]
         word_parse_dict = collections.defaultdict(list)
         for uid, u_parseid in zip(utters_ids, utters_parse):
             for wid, parseid in zip(uid, u_parseid):
-                ##代码更改。
+
                 word_parse_dict[wid.item()].append(parseid)
                 # word_ner_dict[wid.int()].append(parseid)
         parse_ids = sorted(list(set([oo for o in utters_parse for oo in o])))  # utters中出现的所有的parse的ids。
