@@ -19,11 +19,9 @@ parser.add_argument('--ckpt_path', type=str, default='')
 parser.add_argument('--comment', type=str, default='')
 
 parser.add_argument('--embed_dim', type=int, default=300, help='Word embedding dimension.')
-# parser.add_argument('--embed_dim', type=int, default=768, help='Word embedding dimension.')
 parser.add_argument('--bert_dim', type=int, default=300, help='Word embedding dimension of bert model.')
 parser.add_argument('--ner_embed_dim', type=int, default=30, help='NER embedding dimension. concat with word embedding on dim2')
 parser.add_argument('--pos_embed_dim', type=int, default=30, help='POS embedding dimension. concat with word embedding on dim2')
-# dep_embed_dim取值？
 parser.add_argument('--dep_embed_dim', type=int, default=50, help='dep embedding dimension. concat with word embedding on dim2')
 
 
@@ -60,8 +58,8 @@ parser.add_argument('--ggcn_layers', type=int, default=1, help='Number of GAT la
 
 parser.add_argument('--edge_embed_size', type=int, default=50, help='feature embedding size for edge[default: 50]')
 parser.add_argument('--ffn_inner_hidden_size', type=int, default=512,help='PositionwiseFeedForward inner hidden size [default: 512]')
-parser.add_argument('--word2sent_n_head', type=int, default=4, help='multihead attention number [default: 10], 2 * 2 * 3')
-parser.add_argument('--sent2word_n_head', type=int, default=4, help='multihead attention number [default: 10], 11/24 head=6')
+parser.add_argument('--word2sent_n_head', type=int, default=10, help='multihead attention number [default: 10]')
+parser.add_argument('--sent2word_n_head', type=int, default=10, help='multihead attention number [default: 10]')
 parser.add_argument('--atten_dropout_prob', type=float, default=0.1, help='attention dropout prob [default: 0.1]')
 parser.add_argument('--ffn_dropout_prob', type=float, default=0.1,help='PositionwiseFeedForward dropout prob [default: 0.1]')
 
