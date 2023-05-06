@@ -14,13 +14,12 @@ from utils.config import config
 nlp = spacy.load("en_core_web_sm")
 
 def build_embedding(wv_file, vocab, wv_dim):
-    vocab_size = vocab.n_words
+    vocab_size = len(vocab)
     emb = np.random.randn(vocab_size, config.embed_dim) * 0.01
-    # emb = np.random.randn(vocab_size, config.embed_dim) * 0.01
     emb[constant.PAD_ID] = 0 # <pad> should be all 0
 
-    w2id = vocab.word2id
-    with open(wv_file, encoding='latin1') as f:
+    w2id = {w: i for i, w in enumerate(vocab)}
+    with open(wv_file, encoding='utf8') as f:
         for line in f:
             elems = line.split()
             token = ''.join(elems[0:-wv_dim])
@@ -38,14 +37,6 @@ def load_glove_vocab(file, wv_dim):
             vocab.add(token)
     return vocab
 
-def load_bert_vocab(file, wv_dim):
-    vocab = set()
-    with open(file, encoding='utf8') as f:
-        for line in f:
-            elems = line.split()
-            token = ''.join(elems[0:-wv_dim])
-            vocab.add(token)
-    return vocab
 
 class Vocab(object):
     def __init__(self, init_wordlist, word_counter):
@@ -210,7 +201,7 @@ def load_dataset():
         print("{} oov: {}/{} ({:.2f}%)".format(dname, oov, total, oov*100.0/total))
     
     print("building embeddings...")
-    embedding = build_embedding(config.embed_f, v, config.embed_dim)
+    embedding = build_embedding(config.glove_f, v, config.embed_dim)
     print("embedding size: {} x {}".format(*embedding.shape))
 
     print("dumping to files...")
