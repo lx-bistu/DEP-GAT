@@ -23,7 +23,6 @@ parser.add_argument('--embed_dim', type=int, default=300, help='Word embedding d
 parser.add_argument('--bert_dim', type=int, default=768, help='Word embedding dimension of bert model.')
 parser.add_argument('--ner_embed_dim', type=int, default=30, help='NER embedding dimension. concat with word embedding on dim2')
 parser.add_argument('--pos_embed_dim', type=int, default=30, help='POS embedding dimension. concat with word embedding on dim2')
-# dep_embed_dim取值？
 parser.add_argument('--dep_embed_dim', type=int, default=50, help='dep embedding dimension. concat with word embedding on dim2')
 
 
