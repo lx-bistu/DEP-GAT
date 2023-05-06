@@ -13,13 +13,10 @@ parser.add_argument('--mode', type=str, default='train', help='train | test')
 # parser.add_argument('--mode', type=str, default='test', help='train | test')
 parser.add_argument('--data_dir', type=str, default='dataset/')
 parser.add_argument('--glove_file', type=str, default='glove.6B.300d.txt')
-# lightning_logs/default/version_25/epoch=4-val_loss=0.0546-eval_f1=0.5992-eval_T2=0.000.ckpt
-# parser.add_argument('--ckpt_path', type=str, default='lightning_logs/default/version_1/epoch=4-val_loss=0.0546-eval_f1=0.5992-eval_T2=0.000.ckpt')
 parser.add_argument('--ckpt_path', type=str, default='')
 parser.add_argument('--comment', type=str, default='')
 
 parser.add_argument('--embed_dim', type=int, default=300, help='Word embedding dimension.')
-# parser.add_argument('--embed_dim', type=int, default=768, help='Word embedding dimension.')
 parser.add_argument('--bert_dim', type=int, default=768, help='Word embedding dimension of bert model.')
 parser.add_argument('--ner_embed_dim', type=int, default=30, help='NER embedding dimension. concat with word embedding on dim2')
 parser.add_argument('--pos_embed_dim', type=int, default=30, help='POS embedding dimension. concat with word embedding on dim2')
@@ -59,8 +56,8 @@ parser.add_argument('--ggcn_layers', type=int, default=1, help='Number of GAT la
 
 parser.add_argument('--edge_embed_size', type=int, default=50, help='feature embedding size for edge[default: 50]')
 parser.add_argument('--ffn_inner_hidden_size', type=int, default=512,help='PositionwiseFeedForward inner hidden size [default: 512]')
-parser.add_argument('--word2sent_n_head', type=int, default=12, help='multihead attention number [default: 12]')
-parser.add_argument('--sent2word_n_head', type=int, default=12, help='multihead attention number [default: 12]')
+parser.add_argument('--word2sent_n_head', type=int, default=4, help='multihead attention number [default: 10], 2 * 2 * 3')
+parser.add_argument('--sent2word_n_head', type=int, default=4, help='multihead attention number [default: 10], 11/24 head=6')
 parser.add_argument('--atten_dropout_prob', type=float, default=0.1, help='attention dropout prob [default: 0.1]')
 parser.add_argument('--ffn_dropout_prob', type=float, default=0.1,help='PositionwiseFeedForward dropout prob [default: 0.1]')
 
@@ -85,7 +82,6 @@ args = parser.parse_args()
 class Config:
     def __init__(self, args):
         self.__dict__.update(vars(args))
-        # self.gcn_lin_dim = self.lgcn_hidden_dim
         self.gcn_lin_dim = constant.BERT_DIM
         self.ws_edge_bucket = 10
         self.wn_edge_bucket = 10
