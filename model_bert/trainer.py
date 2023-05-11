@@ -13,6 +13,7 @@ from pytorch_lightning import Trainer
 from utils.torch_utils import f1_score, acc_score, f1c_score
 from model_bert.model import Graph_DialogRe
 from utils.data_reader import load_dataset, load_dataset_c, get_original_data
+from utils.data_reader import load_data, load_data_c
 from utils.data_loader import collate_fn, Dataset
 # vis = visdom.Visdom(env='update')
 
@@ -172,7 +173,7 @@ class Train_GraphDialogRe(LightningModule):
         dl_tst = data.DataLoader(self.ds_tst, **kwargs)
         dl_tst_c = data.DataLoader(self.ds_tst_c, **kwargs)
         return [dl_val, dl_val_c, dl_tst, dl_tst_c]
-        
+
     @property
     def batch_size(self): return self.hparams.batch_size
 
